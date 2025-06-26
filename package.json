@@ -1,0 +1,107 @@
+{
+  "name": "campus-cheers-mvp",
+  "version": "1.0.0",
+  "description": "Campus Cheers - Positivity-first anonymous social polling app for high school students",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/uuid": "^9.0.0",
+    "autoprefixer": "^10.4.0",
+    "date-fns": "^2.30.0",
+    "framer-motion": "^10.16.0",
+    "next": "^14.0.0",
+    "next-pwa": "^5.6.0",
+    "postcss": "^8.4.0",
+    "react": "^18.2.0",
+    "react-countdown": "^2.3.5",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.0",
+    "react-webcam": "^7.2.0",
+    "recharts": "^2.8.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.0.0",
+    "uuid": "^9.0.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/$1",
+      "^@/components/(.*)$": "<rootDir>/components/$1",
+      "^@/app/(.*)$": "<rootDir>/app/$1",
+      "^@/lib/(.*)$": "<rootDir>/lib/$1"
+    },
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/.next/",
+      "<rootDir>/coverage/"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": [
+        "babel-jest",
+        {
+          "presets": [
+            "next/babel"
+          ]
+        }
+      ]
+    },
+    "collectCoverageFrom": [
+      "**/*.{js,jsx,ts,tsx}",
+      "!**/*.d.ts",
+      "!**/node_modules/**",
+      "!**/.next/**",
+      "!**/coverage/**",
+      "!**/__tests__/**",
+      "!**/*.config.js",
+      "!**/middleware.ts",
+      "!**/app/layout.tsx",
+      "!**/app/error.tsx",
+      "!**/app/not-found.tsx",
+      "!**/app/global-error.tsx"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "<rootDir>"
+    ],
+    "testEnvironmentOptions": {
+      "url": "http://localhost:3000"
+    }
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^14.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^29.5.14",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.4.0"
+  },
+  "keywords": [
+    "social-media",
+    "polls",
+    "teen-app",
+    "positivity",
+    "pwa"
+  ],
+  "author": "Campus Cheers Team",
+  "license": "MIT"
+}
