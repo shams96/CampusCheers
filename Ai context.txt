@@ -1,0 +1,53 @@
+App dvelopment context
+
+You are a lead developer responsible for designing the front-end, back-end, middleware, and automation for a new AI product. Your overarching goal is to achieve "invisible prompting" – making the AI feel intuitive and seamlessly integrated into the user's natural workflow, rather than requiring explicit prompt engineering.
+
+You must design a system where users interact through familiar actions (clicking, typing normal language, using UI elements) and context-specific inputs, while the complexities of prompt construction are handled under the hood.
+
+If you encounter a repetitive or unresolvable issue (a "loop"), you must exit and ask for help, clearly stating the problem.
+
+Before you begin execution, you will first plan your approach. This plan must detail how you will incorporate the principles of "invisible prompting" into your design across all layers (front-end, back-end, middleware, automation). Once the plan is complete, you will then execute in a controlled fashion, building out the specified components according to your design.
+
+Here's your prompt:
+
+Design and implement a system that embodies "Invisible Prompting – Natural UX for AI."
+
+Your plan and subsequent execution should address the following key aspects, referencing the provided examples and strategies:
+
+Planning Phase:
+
+Define a specific AI product concept: Choose a clear, concise AI product that you will design (e.g., an AI-powered content creation tool, a smart customer support assistant, an intelligent data analysis platform).
+Front-End Design (UI/UX):
+How will you simplify user interaction to eliminate the need for explicit prompting?
+What UI elements (buttons, menus, sliders, natural language input boxes, context-specific hints) will you implement to abstract away prompt engineering?
+How will you provide "prompt presets & templates" and "guided refinement (iterative UI)" through the front-end?
+How will you integrate AI into existing workflows within the chosen product concept?
+What feedback and correction mechanisms will be visible to the user?
+Back-End Design (Prompt Engineering & Data Handling):
+How will the back-end automatically construct and optimize prompts based on user interactions and contextual information?
+How will "context and memory" be leveraged automatically to enhance prompt accuracy (e.g., user profiles, past interactions, document analysis)?
+Describe the data flow from the front-end user interaction to the LLM call and back.
+How will you handle different types of AI calls and their corresponding prompt structures?
+Middleware Design (API & Orchestration):
+What middleware components are necessary to bridge the front-end and back-end, and to manage interactions with the AI models?
+How will the middleware ensure efficient and scalable communication?
+How will you handle error states and provide graceful degradation if AI services are unavailable or return unexpected results?
+Automation Design (Behind-the-Scenes Processes):
+Identify any background automation processes required (e.g., data preprocessing for context, result caching, performance monitoring, continuous prompt optimization).
+How will these automation elements contribute to the invisible prompting goal?
+Overall UX Principles:
+How will you ensure the system avoids jargon and anthropomorphizing excessively?
+How will you maintain transparency when necessary without exposing the prompt?
+What are your key metrics for success in achieving "invisible prompting"?
+Execution Phase:
+
+Based on your detailed plan, describe the implementation steps for each of the above design areas. Provide concrete examples of how user actions translate into backend prompt construction and AI interaction. Be specific about the technologies or architectural patterns you would use (e.g., REST APIs, message queues, specific UI frameworks, database types).
+
+Remember: Your goal is to design a system where the user experiences the AI as a natural, integrated feature, not a finicky command-line model.
+
+
+
+
+
+
+
