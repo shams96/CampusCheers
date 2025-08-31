@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String   @unique // Added for NextAuth compatibility
+  schoolId           String
+  email              String? // Keep for migration compatibility
+  phoneNumber        String?      @unique
+  password           String
+  name               String?
+  profileImage       String?
+  grade              Int? // 9-12 for high school grades
+  isVerified         Boolean      @default(false)
+  verificationCode   String?
+  verificationExpiry DateTime?
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  inclusionScore     Float        @default(0)
+  friends            Friendship[] @relation("friends")
+  friendOf           Friendship[] @relation("friendOf")
+  sentHypes          PollVote[]   @relation("sentHypes")
+  receivedHypes      PollVote[]   @relation("receivedHypes")
+  hypeRounds         HypeRound[]
+  moments            Moment[]
+  School             School       @relation(fields: [schoolId], references: [id])
+
+  // NextAuth.js relations
+  accounts           Account[]
+  sessions           Session[]
+
+  // BeReal-style enhancements
+  momentStreak       Int          @default(0) // Consecutive days of posting moments
+  lastMomentDate     DateTime? // Last time user posted a moment
+  pushNotificationsEnabled Boolean @default(true)
+  cameraPermissionGranted Boolean @default(false)
+  timeZone            String? // For scheduling notifications
+
+  @@id([id, schoolId])
+  @@index([schoolId])
+}
+
+model School {
+  id        String  @id @default(cuid())
+  name      String
+  domain    String  @unique
+  address   String?
+  city      String?
+  state     String?
+  zipCode   String?
+  latitude  Float?
+  longitude Float?
+  users     User[]
+
+  @@index([id])
+}
+
+model PollQuestion {
+  id        String     @id @default(cuid())
+  text      String
+  theme     String?
+  createdAt DateTime   @default(now())
+  votes     PollVote[]
+
+  @@index([id])
+}
+
+model PollVote {
+  id                String
+  pollQuestionId    String
+  pollQuestion      PollQuestion @relation(fields: [pollQuestionId], references: [id])
+  voterId           String
+  voterSchoolId     String
+  voter             User         @relation("sentHypes", fields: [voterId, voterSchoolId], references: [id, schoolId])
+  recipientId       String
+  recipientSchoolId String
+  recipient         User         @relation("receivedHypes", fields: [recipientId, recipientSchoolId], references: [id, schoolId])
+  hypeRoundId       String
+  hypeRoundUserId   String
+  hypeRound         HypeRound    @relation(fields: [hypeRoundId, hypeRoundUserId], references: [id, userId])
+  createdAt         DateTime     @default(now())
+
+  @@id([id, recipientId])
+  @@index([recipientId])
+  @@index([voterId])
+  @@index([hypeRoundId])
+}
+
+model HypeRound {
+  id        String
+  userId    String
+  user      User       @relation(fields: [userId, schoolId], references: [id, schoolId])
+  schoolId  String
+  votes     PollVote[]
+  createdAt DateTime   @default(now())
+
+  @@id([id, userId])
+  @@index([userId])
+}
+
+model Moment {
+  id        String
+  userId    String
+  user      User     @relation(fields: [userId, schoolId], references: [id, schoolId])
+  schoolId  String
+  caption   String?
+  posts     Post[]
+  createdAt DateTime @default(now())
+
+  // BeReal-style enhancements
+  captureTime        DateTime? // When the moment was originally captured
+  isLate             Boolean  @default(false) // Whether posted outside 24-hour window
+  timeRemaining      Int?     // Seconds remaining when captured
+
+  @@id([id, userId])
+  @@index([userId])
+}
+
+model Post {
+  id           String
+  momentId     String
+  moment       Moment   @relation(fields: [momentId, momentUserId], references: [id, userId])
+  momentUserId String
+  imageUrl     String
+  isFront      Boolean
+  createdAt    DateTime @default(now())
+
+  @@id([id, momentId])
+  @@index([momentId])
+}
+
+model Friendship {
+  id            String
+  user1Id       String
+  user1SchoolId String
+  user2Id       String
+  user2SchoolId String
+  user1         User     @relation("friends", fields: [user1Id, user1SchoolId], references: [id, schoolId])
+  user2         User     @relation("friendOf", fields: [user2Id, user2SchoolId], references: [id, schoolId])
+  createdAt     DateTime @default(now())
+
+  @@id([id, user1Id])
+  @@unique([user1Id, user2Id])
+  @@index([user1Id])
+  @@index([user2Id])
+}
+
+// NextAuth.js models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

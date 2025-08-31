@@ -1,0 +1,56 @@
+services:
+  # Citus Coordinator Node
+  coordinator:
+    image: citusdata/citus:11.3.0
+    restart: always
+    environment:
+      POSTGRES_USER: johndoe
+      POSTGRES_PASSWORD: randompassword
+      POSTGRES_DB: mydb
+      # Citus specific settings
+      PGPORT: 5432
+    ports:
+      - '5432:5432'
+    volumes:
+      - coordinator_data:/var/lib/postgresql/data
+    command: "postgres -c shared_preload_libraries=citus -c citus.node_conninfo='sslmode=prefer'"
+
+  # Citus Worker Nodes
+  worker1:
+    image: citusdata/citus:11.3.0
+    restart: always
+    environment:
+      POSTGRES_USER: johndoe
+      POSTGRES_PASSWORD: randompassword
+      POSTGRES_DB: mydb
+    volumes:
+      - worker1_data:/var/lib/postgresql/data
+    command: "postgres -c shared_preload_libraries=citus -c citus.node_conninfo='sslmode=prefer'"
+
+  worker2:
+    image: citusdata/citus:11.3.0
+    restart: always
+    environment:
+      POSTGRES_USER: johndoe
+      POSTGRES_PASSWORD: randompassword
+      POSTGRES_DB: mydb
+    volumes:
+      - worker2_data:/var/lib/postgresql/data
+    command: "postgres -c shared_preload_libraries=citus -c citus.node_conninfo='sslmode=prefer'"
+
+  # Redis service for caching
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  coordinator_data:
+  worker1_data:
+  worker2_data:
+  redis_data:
+  postgres_data:
